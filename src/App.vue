@@ -1,8 +1,8 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+  
+  <router-link to="/"></router-link>
+  <router-link to="/about"></router-link>
+  <router-link to="/inicio"></router-link>
   <router-view/>
 </template>
 
@@ -13,6 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+img{
+  margin-top: 175px;
+  max-width: 300px;
+  max-height: 300px;
 }
 
 nav {
