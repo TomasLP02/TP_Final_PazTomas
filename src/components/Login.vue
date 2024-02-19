@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <h3>Ingrese un ID alfanumérico</h3>
     
-    <input class="input-group mb-3, form-control" v-model="idInput">
+    <input id="userID" class="input-group mb-3, form-control" v-model="idInput">
 
     <button @click="IniciarSesion">Ingresar</button>
   </div>
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     IniciarSesion(){
-    console.log('ID ingresado:', this.idInput);
+    localStorage.setItem('userID', this.idInput);
     this.$router.push('/inicio');
   },
   }

@@ -1,11 +1,36 @@
-<template>
-  
+<template>  
   <router-link to="/"></router-link>
   <router-link to="/about"></router-link>
   <router-link to="/inicio"></router-link>
   <router-view/>
 </template>
-
+<script>
+export default{
+    methods: {
+        NuevaCompra(){
+            this.$router.push('/nueva-compra');
+        }, 
+        NuevaVenta(){
+            this.$router.push('/nueva-venta');
+        },
+        Historial(){
+            this.$router.push('/historial');
+        },
+        Editar(){
+            this.$router.push('/editar');
+        },
+        AnalisisActual(){
+            this.$router.push('/analisis-actual');
+        },
+        AnalisisInversiones(){
+            this.$router.push('/analisis-inversiones');
+        },
+        Volver(){
+            this.$router.push('/inicio');
+        },
+    }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

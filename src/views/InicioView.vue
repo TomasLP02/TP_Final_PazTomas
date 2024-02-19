@@ -34,6 +34,7 @@ export default{
         AnalisisInversiones(){
             this.$router.push('/analisis-inversiones');
         },
+
     }
 }
     
