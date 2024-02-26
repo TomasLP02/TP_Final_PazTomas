@@ -1,8 +1,13 @@
 <template>
-  <div class="cuerpo">
+  <div class="body">
 
     <h1>Nueva compra</h1>
-    
+    <div class="totales">
+      <p>Total en pesos: {{ totalPesos.toFixed(2) }}</p>
+      <p>Total Bitcoin: {{ totalBitcoin }}</p>
+      <p>Total Ethereum: {{ totalEthereum }}</p>
+      <p>Total Dai: {{ totalDai }}</p>
+    </div>
     <div class="inputGroup">
 
       <select id="crypto_code" @change="onCryptoCodeChange">
@@ -41,9 +46,12 @@ export default {
   },
   data(){
     return{
+      totalPesos: 0,
+      totalDai: 0,
+      totalBitcoin: 0,
+      totalEthereum: 0,
       action: '',
       cryptoCode: '',
-      lastCryptoCode: '',
       cryptoAmount: '',
       cryptoPrice: 0,
       selectedDate: '',
@@ -65,7 +73,29 @@ export default {
       this.updateCryptoPrice();
     },
   },
+  mounted(){
+    const totalPesos = localStorage.getItem('totalPesos') || '0';
+    const totalDai = localStorage.getItem('totalDai') || '0';
+    const totalBitcoin = localStorage.getItem('totalBitcoin') || '0';
+    const totalEthereum = localStorage.getItem('totalEthereum') || '0';
+
+    this.totalPesos = parseFloat(totalPesos);
+    this.totalDai = parseFloat(totalDai);
+    this.totalBitcoin = parseFloat(totalBitcoin);
+    this.totalEthereum = parseFloat(totalEthereum);
+  },
   methods: {
+    mounted(){
+      const totalPesos = localStorage.getItem('totalPesos') || '0';
+      const totalDai = localStorage.getItem('totalDai') || '0';
+      const totalBitcoin = localStorage.getItem('totalBitcoin') || '0';
+      const totalEthereum = localStorage.getItem('totalEthereum') || '0';
+
+      this.totalPesos = parseFloat(totalPesos);
+      this.totalDai = parseFloat(totalDai);
+      this.totalBitcoin = parseFloat(totalBitcoin);
+      this.totalEthereum = parseFloat(totalEthereum);
+    },
     async updateCryptoPrice() {
       if (this.cryptoCode) {
         try {
@@ -102,6 +132,7 @@ export default {
 
       return nombreCrypto[code] || code;
     },
+    
     confirmarCompra() {
       if (!this.cryptoCode) {
         alert('Por favor, seleccione una criptomoneda');
@@ -134,9 +165,12 @@ export default {
         action: "purchase",
         crypto_code: cryptoName,
         crypto_amount: this.cryptoAmount,
-        money: this.money,
-        datetime: this.selectedDate,
-      };      
+        money: this.money.toFixed(2),
+        datetime: fechaSeleccionada,
+      };
+      if (this.money > this.totalPesos){
+      alert('No posee suficientes pesos para realizar la compra');
+    }else{      
       const apiClient = axios.create({
       baseURL: 'https://laboratorio3-f36a.restdb.io/rest',
       headers: {'x-apikey': '60eb09146661365596af552f'}
@@ -145,6 +179,7 @@ export default {
         .then(response => {
           alert('Compra realizada exitosamente');
           console.log('Datos de la Compra', response.data);
+          this.$router.push('/inicio');
         })
         .catch(error => {
           alert('Fallo al realizar la compra');
@@ -154,14 +189,13 @@ export default {
       this.cryptoAmount = '';
       this.money = '';
       this.selectedDate = '';
-      this.$router.push('/inicio');
-      },
-    }
+      }
+    },    
   }
-  
+}
 </script>
 <style scoped>
-.cuerpo {
+.body {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -169,10 +203,40 @@ export default {
   height: 70vh; 
 }
 
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+}
+
+button {
+    margin-top: 30px;
+    background-color: #2cb2ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  button:hover {
+    background-color: #000000;
+  }
+.totales{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+p{
+  margin-right: 50px;
+}
 .inputGroup {
   display: flex;
-  flex-direction: column;
-  margin-top: 10px;
+    flex-direction: column;
+    margin-top: 10px;
+    align-items: center;
 }
 
 .inputGroup input {
